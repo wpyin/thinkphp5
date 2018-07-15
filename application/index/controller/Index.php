@@ -6,7 +6,7 @@ use think\Db;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Cell;
-//无课表基本共功能
+
 class Index extends Controller
 {
     public function index()
