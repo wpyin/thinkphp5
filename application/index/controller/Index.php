@@ -21,6 +21,10 @@ class Index extends Controller
     public function import(){
       return $this->fetch('index/import');
     }
+    public function export(){
+      $this->wukebiao();
+      return $this->fetch('index/export');
+    }
 
     //导入课程信息excel表
     public function inputKecheng()
@@ -53,8 +57,8 @@ if($file){
 if(file_exists($filename)) {//如果文件存在
 	echo "<script >alert('文件上传成功');</script>";
 }
-return $this->fetch('index/import');
-die;
+// Db::name('jiaoshi')->delete(true);
+Db::execute('TRUNCATE table wp_jiaoshi');
 // print_r($filename);die;
        // 文件导入
        // $filename="E:\\wamp64\www\\thinkphp5\\public\\style\\uploads\\"."$filename".".xls";
@@ -83,7 +87,7 @@ die;
         	// print_r($user);die;
         	$success=Db::name('jiaoshi')->insert($user); //批量插入数据
         }
-        return ;
+        return $this->success('导入成功','index/export');
        }else{
        	     return  array("resultcode" => -5,"resultmsg" =>"文件不存在","data" =>null);
        }
@@ -118,13 +122,13 @@ die;
           }
 
           if(file_exists($filename)) {//如果文件存在
-            echo "<script >alert('文件上传成功');</script>";
+            echo "文件上传成功";
           }
           
           // print_r($filename);die;
           // 文件导入
           // $filename="E:\\wamp64\www\\thinkphp5\\public\\style\\uploads\\"."$filename".".xls";
-          Db::name('xuhao')->delete(true);
+         Db::execute('TRUNCATE table wp_xuhao');
           $filename=iconv('utf-8', 'gbk', $filename);
           if(file_exists($filename)){
             // 如果文件存在
@@ -145,7 +149,8 @@ die;
           // print_r($user);die;
               $success=Db::name('xuhao')->insert($user); //批量插入数据
             }
-              return $this->redirect('index/import'); 
+              return $this->success('导入成功','index/import');
+              
             }else{
                   return  array("resultcode" => -5,"resultmsg" =>"文件不存在","data" =>null);
             }
@@ -179,7 +184,7 @@ die;
     //对数据进行处理 生成总无课表
     public function wukebiao(){
 
-    	
+    	  Db::execute('TRUNCATE table wp_zhouyi');
     	$wp = Db::name('jiaoshi')->where('xiaoqu','金明校区')->select(); 
     	
     	foreach ($wp as $key => $value) {
@@ -235,7 +240,7 @@ die;
        }
        
     }
-
+    //为导出做提前准备
    public function daochu($number,$louhao){
     
     $zhouyi = Db::name('zhouyi')->where('xingqi',$number)->order('jiaoshi esc')->select(); 

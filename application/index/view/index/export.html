@@ -115,12 +115,62 @@
 									<h3 class="panel-title">上传教务处导出的数据<a href="" style =" margin-left:50px;">点击下载模板</a></h3> 
 								</div>
 								<div class="panel-body">
-									<div style="margin:15px;">
-										<form method="post" action="{:url('index/inputKecheng')}" enctype="multipart/form-data">
-											<h3>导入Excel表：</h3><input  type="file" name="file" /></br>
-											<input type="submit"  class="btn btn-primary"  value="导入并进入下一步" />
-										</form>
+									<div class="panel-body no-padding">
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th>Order No.</th>
+												<th>Name</th>
+												<th>Amount</th>
+												<th>Date &amp; Time</th>
+												<th>Status</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><a href="#">763648</a></td>
+												<td>Steve</td>
+												<td>$122</td>
+												<td>Oct 21, 2016</td>
+												<td><span class="label label-success">COMPLETED</span></td>
+											</tr>
+											<tr>
+												<td><a href="#">763649</a></td>
+												<td>Amber</td>
+												<td>$62</td>
+												<td>Oct 21, 2016</td>
+												<td><span class="label label-warning">PENDING</span></td>
+											</tr>
+											<tr>
+												<td><a href="#">763650</a></td>
+												<td>Michael</td>
+												<td>$34</td>
+												<td>Oct 18, 2016</td>
+												<td><span class="label label-danger">FAILED</span></td>
+											</tr>
+											<tr>
+												<td><a href="#">763651</a></td>
+												<td>Roger</td>
+												<td>$186</td>
+												<td>Oct 17, 2016</td>
+												<td><span class="label label-success">SUCCESS</span></td>
+											</tr>
+											<tr>
+												<td><a href="#">763652</a></td>
+												<td>Smith</td>
+												<td>$362</td>
+												<td>Oct 16, 2016</td>
+												<td><span class="label label-success">SUCCESS</span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="panel-footer">
+									<div class="row">
+										<div class="col-md-6"><span class="panel-note"><i class="fa fa-clock-o"></i> Last 24 hours</span></div>
+										<div class="col-md-6 text-right"><a href="#" class="btn btn-primary">View All Purchases</a></div>
 									</div>
+								</div>
 								</div>
 							</div>
 							<!-- END 按钮 -->
