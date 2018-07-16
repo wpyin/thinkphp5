@@ -18,18 +18,28 @@ class Index extends Controller
         return $this->fetch('index');
       
     }
+    public function import(){
+      return $this->fetch('index/import');
+    }
 
-    //导入excel表
-    public function import($filename)
+    //导入课程信息excel表
+    public function inputKecheng()
     {
+      $file = request()->file('file');
+
+      if(empty($file)) {//如果文件存在
+        return $this->error('请按照流程操作','Index');
+        
+      }
+      
           
        // 引入PHPExcel
        header("content-type:text/html; charset=utf-8");
        vendor("PHPExcel.PHPExcel");
 
-       $file = request()->file('file');
+       
 // 移动到框架应用根目录/public/uploads/ 目录下
-
+$filename="";
 if($file){
     $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
     if($info){
@@ -39,9 +49,12 @@ if($file){
         return array("resultcode" => -4, "resultmsg" => "文件上传失败", "data" => $file->getError());
     }
 }
+
 if(file_exists($filename)) {//如果文件存在
-	echo "文件上传成功";
+	echo "<script >alert('文件上传成功');</script>";
 }
+return $this->fetch('index/import');
+die;
 // print_r($filename);die;
        // 文件导入
        // $filename="E:\\wamp64\www\\thinkphp5\\public\\style\\uploads\\"."$filename".".xls";
@@ -76,6 +89,70 @@ if(file_exists($filename)) {//如果文件存在
        }
 
     }
+    //导入教室号
+    public function inputNumber(){
+
+      $file = request()->file('file');
+
+          if(empty($file)) {//如果文件存在
+            return $this->error('请按照流程操作','Index');
+
+          }
+
+
+       // 引入PHPExcel
+          header("content-type:text/html; charset=utf-8");
+          vendor("PHPExcel.PHPExcel");
+
+
+// 移动到框架应用根目录/public/uploads/ 目录下
+          $filename="";
+          if($file){
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+            if($info){
+              $filename=ROOT_PATH . 'public' . DS . 'uploads'.DS.$info->getSaveName();
+            }else{
+        // 上传失败获取错误信息
+              return array("resultcode" => -4, "resultmsg" => "文件上传失败", "data" => $file->getError());
+            }
+          }
+
+          if(file_exists($filename)) {//如果文件存在
+            echo "<script >alert('文件上传成功');</script>";
+          }
+          
+          // print_r($filename);die;
+          // 文件导入
+          // $filename="E:\\wamp64\www\\thinkphp5\\public\\style\\uploads\\"."$filename".".xls";
+          Db::name('xuhao')->delete(true);
+          $filename=iconv('utf-8', 'gbk', $filename);
+          if(file_exists($filename)){
+            // 如果文件存在
+            $PHPReader = new \PHPExcel_Reader_Excel5();
+            // 载入excel文件
+            $PHPExcel = $PHPReader->load($filename);
+            // print_r($PHPExcel);die;
+            $sheet = $PHPExcel->getActiveSheet(0);//获取sheet
+        
+            $highestRow = $sheet ->getHighestRow();//获取共有数据数
+         // print_r($highestRow);die;
+            $data=$sheet->toArray();
+            for($i=1;$i<$highestRow;$i++){
+              $user['xuhao']=$data[$i][0];
+            
+          // $modelUserLogic = Loader::model('User','logic');//可能是链接数据库
+          // $ret=$modelUserLogic->add($user);
+          // print_r($user);die;
+              $success=Db::name('xuhao')->insert($user); //批量插入数据
+            }
+              return $this->redirect('index/import'); 
+            }else{
+                  return  array("resultcode" => -5,"resultmsg" =>"文件不存在","data" =>null);
+            }
+
+
+    }
+
     // 获取字符串中数字
     public function findNum($str=''){
     $str=trim($str);
